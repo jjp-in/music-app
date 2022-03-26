@@ -1,7 +1,6 @@
 version: '2.2'
 services:
 
-
   mysql:
     image: mysql:latest
     ports:
