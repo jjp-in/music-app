@@ -1,0 +1,43 @@
+version: '2.2'
+services:
+
+  mysql:
+    image: mysql:latest
+    ports:
+      - 3306:3306
+    network_mode: host
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: userDB
+      MYSQL_USER: testroot
+      MYSQL_PASSWORD: root
+    healthcheck:
+      test: "exit 0"
+  mongo:
+    image: mongo:3.2-jessie
+    ports:
+      - 27017:27017
+    container_name: mongo
+    network_mode: host
+    healthcheck:
+      test: "exit 0"
+  userservice:
+    build: UserService/
+    restart: always
+    network_mode: host
+    depends_on:
+      - mysql
+    ports:
+      - 8083:8083
+    healthcheck:
+      test: "exit 0"
+  trackservice:
+    build: TrackService/
+    restart: always
+    network_mode: host
+    depends_on:
+      - mongo
+    ports:
+      - 8087:8087
+    healthcheck:
+      test: "exit 0"
